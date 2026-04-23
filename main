@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thacher 2025 — Oral History Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+ --cream: #f5f0e8;
+ --cream2: #ede7d9;
+ --cream3: #e2d9c8;
+ --ink: #1a1612;
+ --ink2: #3d3629;
+ --ink3: #6b5f4e;
+ --ink4: #9c8e7a;
+ --ink5: #c4b8a6;
+ --rust: #8b3a1a;
+ --rust-light: #f2e8e2;
+ --gold: #b8882a;
+ --gold-light: #f5edd8;
+ --green: #2a6b3a;
+ --green-light: #e8f2eb;
+ --border: rgba(26,22,18,0.12);
+ --border2: rgba(26,22,18,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;min-height:100vh}
+ 
+/* SCREENS */
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+#login-screen{display:none;min-height:100vh;align-items:center;justify-content:center;padding:2rem;background:var(--ink);position:relative;overflow:hidden}
+#login-screen.active{display:flex}
+#login-screen::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,.015) 60px,rgba(255,255,255,.015) 61px)}
+ 
+/* LOGIN CARD */
+.login-card{background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:2.5rem;width:100%;max-width:400px;position:relative;z-index:1;animation:fadeUp .4s ease}
+.login-logo{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:.2rem}
+.login-logo em{font-style:italic;color:var(--rust)}
+.login-sub{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);margin-bottom:2rem}
+.login-divider{height:1px;background:var(--border);margin:1.25rem 0}
+.login-label{font-family:'DM Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);display:block;margin-bottom:.4rem}
+.login-input{width:100%;background:white;border:1px solid var(--border);border-radius:4px;padding:.65rem .9rem;font-family:'Source Serif 4',serif;font-size:.9rem;color:var(--ink);outline:none;margin-bottom:1rem;transition:border-color .2s}
+.login-input:focus{border-color:var(--rust)}
+.login-btn{width:100%;background:var(--rust);color:white;border:none;border-radius:4px;padding:.75rem;font-family:'DM Mono',monospace;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:opacity .15s;margin-top:.25rem}
+.login-btn:hover{opacity:.85}
+.login-error{background:rgba(139,58,26,.08);border:1px solid rgba(139,58,26,.25);border-radius:4px;padding:.5rem .75rem;font-size:.78rem;color:var(--rust);margin-bottom:.75rem;display:none;font-family:'DM Mono',monospace}
+.login-hint{font-size:.72rem;color:var(--ink4);text-align:center;margin-top:1rem;font-family:'DM Mono',monospace}
+.login-guest{display:block;text-align:center;margin-top:1.25rem;font-size:.75rem;color:var(--ink4);font-family:'DM Mono',monospace;cursor:pointer;text-decoration:underline;border:none;background:none;width:100%;transition:color .15s}
+.login-guest:hover{color:var(--rust)}
+ 
+/* MASTHEAD */
+.masthead{background:var(--ink);color:var(--cream);text-align:center;padding:3rem 2rem 2.5rem;position:relative;overflow:hidden}
+.masthead::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,.015) 60px,rgba(255,255,255,.015) 61px)}
+.masthead-inner{position:relative;z-index:1}
+.school-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink4);margin-bottom:.75rem}
+.masthead-rule{height:1px;background:rgba(255,255,255,.15);width:60px;margin:0 auto 1.25rem}
+.masthead-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;color:var(--cream);line-height:1.2;margin-bottom:.5rem}
+.masthead-title em{color:var(--gold);font-style:italic}
+.masthead-sub{font-size:.9rem;color:var(--ink4);font-style:italic;margin-bottom:1.5rem}
+.masthead-desc{max-width:600px;margin:1.5rem auto 0;font-size:.85rem;color:var(--ink4);line-height:1.75}
+.masthead-nav{position:absolute;top:1.25rem;right:1.5rem;display:flex;gap:.75rem;align-items:center;z-index:2}
+.nav-btn{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;padding:.4rem .9rem;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);background:none;cursor:pointer;transition:all .15s}
+.nav-btn:hover{border-color:rgba(255,255,255,.5);color:white}
+.nav-btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+ 
+/* CONTROLS */
+.controls{background:var(--cream2);border-bottom:1px solid var(--border);padding:1.1rem 2rem;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:200px;max-width:480px;position:relative}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--ink4);font-size:.85rem;pointer-events:none}
+.search-input{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:.6rem 1rem .6rem 2.4rem;font-family:'Source Serif 4',serif;font-size:.9rem;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.search-input:focus{border-color:var(--rust);box-shadow:0 0 0 3px rgba(139,58,26,.08)}
+.search-input::placeholder{color:var(--ink5);font-style:italic}
+.results-count{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--ink4);white-space:nowrap}
+ 
+/* FILTERS */
+.filters{background:var(--cream);border-bottom:1px solid var(--border);padding:.7rem 2rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.filter-label{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink4);margin-right:.25rem}
+.chip{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;padding:.25rem .6rem;border-radius:20px;border:1px solid var(--border);color:var(--ink3);background:none;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--rust);color:var(--rust)}
+.chip.active{background:var(--rust);border-color:var(--rust);color:white}
+ 
+/* GALLERY */
+.main{max-width:1280px;margin:0 auto;padding:2.5rem 2rem}
+.section-head{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;margin-top:2.5rem}
+.section-head:first-child{margin-top:0}
+.section-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;color:var(--ink2)}
+.section-line{flex:1;height:1px;background:var(--border)}
+.section-count{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink5);text-transform:uppercase;letter-spacing:.08em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin-bottom:1rem}
+.card{background:white;border:1px solid var(--border);border-radius:4px;padding:1.5rem;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;animation:fadeUp .3s ease both;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--rust);border-radius:4px 0 0 4px;opacity:0;transition:opacity .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,22,18,.1)}
+.card:hover::before{opacity:1}
+.card.is-new::after{content:'New';position:absolute;top:.75rem;right:.75rem;background:var(--green);color:white;font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;padding:.15rem .45rem;border-radius:20px}
+.card-cat{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--rust);margin-bottom:.5rem}
+.card-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:600;line-height:1.35;color:var(--ink);margin-bottom:.35rem}
+.card-title mark,.card-abstract mark{background:#fef3c7;color:var(--ink);border-radius:2px;padding:0 1px}
+.card-student{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink4);margin-bottom:.7rem}
+.card-abstract{font-size:.81rem;color:var(--ink3);line-height:1.65;flex:1;margin-bottom:.8rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.tag{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.04em;padding:.18rem .4rem;border-radius:3px;background:var(--cream2);color:var(--ink4);border:1px solid var(--cream3)}
+.has-audio{margin-left:auto;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--gold);display:flex;align-items:center;gap:.3rem}
+.has-audio::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.empty{text-align:center;padding:4rem 2rem;color:var(--ink4)}
+.empty-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;margin-bottom:.5rem;color:var(--ink3)}
+ 
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(26,22,18,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(3px)}
+.overlay.open{display:flex}
+.modal{background:var(--cream);border:1px solid var(--border);border-radius:4px;width:100%;max-width:720px;max-height:85vh;overflow-y:auto;animation:fadeUp .2s ease;box-shadow:0 20px 60px rgba(26,22,18,.25)}
+.modal-head{padding:1.75rem 1.75rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--cream);z-index:1}
+.modal-cat{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--rust);margin-bottom:.4rem}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;line-height:1.3;color:var(--ink);margin-bottom:.3rem}
+.modal-student{font-size:.78rem;color:var(--ink4);font-style:italic}
+.modal-close{position:absolute;top:1.1rem;right:1.1rem;background:none;border:1px solid var(--border);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;color:var(--ink4);transition:all .15s}
+.modal-close:hover{border-color:var(--rust);color:var(--rust)}
+.modal-body{padding:1.5rem 1.75rem}
+.modal-body h3{font-family:'Playfair Display',serif;font-size:.85rem;font-weight:600;color:var(--ink2);margin:1.25rem 0 .4rem;text-transform:uppercase;letter-spacing:.05em}
+.modal-body h3:first-child{margin-top:0}
+.modal-body p{font-size:.88rem;color:var(--ink2);line-height:1.8;margin-bottom:.75rem}
+.modal-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)}
+.modal-audio{margin-top:1rem;padding:.65rem 1rem;background:var(--gold-light);border:1px solid rgba(184,136,42,.2);border-radius:4px;font-size:.75rem;color:var(--gold);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:.5rem}
+ 
+/* ADMIN */
+.admin-wrap{display:flex;min-height:100vh}
+.admin-sidebar{width:240px;flex-shrink:0;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;padding:2rem 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.admin-logo{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--cream);padding:0 1.5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:1rem}
+.admin-logo em{font-style:italic;color:var(--gold)}
+.admin-logo span{display:block;font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink4);margin-top:.25rem}
+.admin-nav-label{font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.25);padding:0 1.5rem;margin-bottom:.4rem;margin-top:1rem}
+.admin-nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1.5rem;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s}
+.admin-nav-item:hover{color:white;background:rgba(255,255,255,.05)}
+.admin-nav-item.active{color:var(--gold);background:rgba(184,136,42,.1)}
+.admin-nav-item .ico{width:16px;text-align:center}
+.admin-bottom{margin-top:auto;padding:1.25rem 1.5rem 0;border-top:1px solid rgba(255,255,255,.08)}
+.admin-user{font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.4);margin-bottom:.6rem}
+.admin-user strong{display:block;color:rgba(255,255,255,.7);margin-bottom:.1rem}
+.admin-signout{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer;padding:0;text-align:left;transition:color .15s;text-decoration:underline}
+.admin-signout:hover{color:var(--rust)}
+.admin-main{flex:1;background:var(--cream);overflow-y:auto}
+.admin-topbar{background:white;border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.admin-page-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
+.admin-content{padding:2rem;max-width:1000px}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+ 
+/* STATS */
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.astat{background:white;border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+.astat-val{font-family:'Playfair Display',serif;font-size:2rem;color:var(--rust);line-height:1;margin-bottom:.2rem}
+.astat-label{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink4)}
+ 
+/* FORM */
+.upload-card{background:white;border:1px solid var(--border);border-radius:6px;padding:2rem;margin-bottom:1.5rem}
+.upload-card h2{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;margin-bottom:1.5rem;color:var(--ink);padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:.35rem}
+.form-label{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.form-label .req{color:var(--rust)}
+.form-input,.form-select,.form-textarea{background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:.6rem .85rem;font-family:'Source Serif 4',serif;font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--rust)}
+.form-textarea{min-height:130px;resize:vertical;line-height:1.6}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%239c8e7a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center}
+.form-hint{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink4)}
+.audio-toggle{display:flex;align-items:center;gap:.65rem;cursor:pointer}
+.audio-toggle input{accent-color:var(--rust);width:16px;height:16px;cursor:pointer}
+.audio-toggle span{font-size:.85rem;color:var(--ink2)}
+.submit-row{display:flex;align-items:center;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.btn-primary{background:var(--rust);color:white;border:none;border-radius:4px;padding:.7rem 1.5rem;font-family:'DM Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:opacity .15s}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{background:none;color:var(--ink3);border:1px solid var(--border);border-radius:4px;padding:.7rem 1.25rem;font-family:'DM Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:all .15s}
+.btn-secondary:hover{border-color:var(--ink3);color:var(--ink)}
+.success-msg{background:var(--green-light);border:1px solid rgba(42,107,58,.2);border-radius:4px;padding:.6rem 1rem;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--green);display:none}
+.success-msg.show{display:block}
+ 
+/* MANAGE TABLE */
+.manage-card{background:white;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:1.5rem}
+.manage-card h2{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:400;margin:0;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.manage-search{padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.manage-search input{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:.5rem .85rem;font-family:'Source Serif 4',serif;font-size:.85rem;color:var(--ink);outline:none}
+table{width:100%;border-collapse:collapse}
+th{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink4);padding:.6rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);background:var(--cream2);font-weight:400}
+td{font-size:.82rem;padding:.75rem 1.25rem;border-bottom:1px solid var(--border2);color:var(--ink2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--cream2)}
+.td-title{font-family:'Playfair Display',serif;font-weight:600;color:var(--ink);max-width:260px}
+.td-cat{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--rust)}
+.td-mono{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink4)}
+.td-badge{display:inline-block;padding:.15rem .45rem;border-radius:3px;font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em}
+.badge-original{background:var(--cream2);color:var(--ink4);border:1px solid var(--cream3)}
+.badge-added{background:var(--green-light);color:var(--green);border:1px solid rgba(42,107,58,.2)}
+.btn-delete{background:none;border:none;color:var(--ink5);font-size:.9rem;cursor:pointer;padding:.2rem .4rem;border-radius:3px;transition:all .15s}
+.btn-delete:hover{color:var(--rust);background:var(--rust-light)}
+ 
+footer{background:var(--ink);color:var(--ink4);text-align:center;padding:1.75rem 2rem;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.05em}
+footer span{color:var(--cream3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--ink5);border-radius:4px}
+</style>
+</head>
+<body>
+ 
+<!-- ══ LOGIN ══ -->
+<div id="login-screen" class="active">
+ <div class="login-card">
+   <div class="login-logo">Thacher <em>Oral History</em></div>
+   <div class="login-sub">2025 Interview Gallery</div>
+   <div class="login-divider"></div>
+   <div id="login-error" class="login-error">Incorrect credentials. Please try again.</div>
+   <label class="login-label">Email</label>
+   <input class="login-input" id="login-email" type="email" placeholder="you@thacher.org">
+   <label class="login-label">Password</label>
+   <input class="login-input" id="login-pass" type="password" placeholder="••••••••">
+   <button class="login-btn" onclick="doLogin()">Sign In →</button>
+   <button class="login-guest" onclick="guestAccess()">Browse as guest (public gallery only)</button>
+   <div class="login-hint">Admin: wdeclercq@ or awayner@thacher.org</div>
+ </div>
+</div>
+ 
+<!-- ══ PUBLIC GALLERY ══ -->
+<div id="public-screen" class="screen">
+ <header class="masthead">
+   <div class="masthead-inner">
+     <div class="masthead-nav">
+       <button class="nav-btn gold" id="admin-nav-btn" onclick="switchToAdmin()" style="display:none">⚙ Admin Panel</button>
+       <button class="nav-btn" onclick="signOut()">Sign Out</button>
+     </div>
+     <div class="masthead-rule"></div>
+     <div class="school-label">The Thacher School · Honors U.S. History</div>
+     <h1 class="masthead-title">2025 Oral History<br><em>Interview Gallery</em></h1>
+     <div class="masthead-sub">Archival primary sources for future research</div>
+     <div class="masthead-desc">This spring, the 2025 U.S. Honors History class conducted interviews and published them as archival research sources for future use. Topics range from immigration and civil rights to medicine, war, and communism — spanning international, national, and local history.</div>
+   </div>
+ </header>
+ <div class="controls">
+   <div class="search-wrap">
+     <span class="search-icon">⌕</span>
+     <input class="search-input" id="pub-search" placeholder="Search interviews, topics, people…" oninput="renderGallery()">
+   </div>
+   <div class="results-count" id="pub-count"></div>
+ </div>
+ <div class="filters">
+   <span class="filter-label">Topic:</span>
+   <button class="chip active" onclick="setFilter('all',this)">All</button>
+   <button class="chip" onclick="setFilter('Immigration',this)">Immigration</button>
+   <button class="chip" onclick="setFilter('Civil Rights & Activism',this)">Civil Rights</button>
+   <button class="chip" onclick="setFilter('Effects of War',this)">War</button>
+   <button class="chip" onclick="setFilter('Medicine',this)">Medicine</button>
+   <button class="chip" onclick="setFilter('Education',this)">Education</button>
+   <button class="chip" onclick="setFilter('Financial Crisis',this)">Finance</button>
+   <button class="chip" onclick="setFilter('Family',this)">Family</button>
+   <button class="chip" onclick="setFilter('LGBTQ+ History',this)">LGBTQ+</button>
+   <button class="chip" onclick="setFilter(&quot;Women's History&quot;,this)">Women</button>
+   <button class="chip" onclick="setFilter('Other',this)">Other</button>
+ </div>
+ <main class="main" id="pub-main"></main>
+ <footer><span>The Thacher School</span> · Honors U.S. History · Class of 2025 · Ojai, California</footer>
+</div>
+ 
+<!-- ══ ADMIN ══ -->
+<div id="admin-screen" class="screen">
+ <div class="admin-wrap">
+   <aside class="admin-sidebar">
+     <div class="admin-logo">Thacher <em>Admin</em><span>Oral History Gallery</span></div>
+     <div class="admin-nav-label">Manage</div>
+     <button class="admin-nav-item active" onclick="showAdminPanel('upload',this)"><span class="ico">＋</span> Upload Interview</button>
+     <button class="admin-nav-item" onclick="showAdminPanel('manage',this)"><span class="ico">☰</span> All Interviews</button>
+     <div class="admin-nav-label">View</div>
+     <button class="admin-nav-item" onclick="switchToPublic()"><span class="ico">↗</span> Public Gallery</button>
+     <div class="admin-bottom">
+       <div class="admin-user"><strong id="admin-user-name">—</strong>Administrator</div>
+       <button class="admin-signout" onclick="signOut()">Sign out</button>
+     </div>
+   </aside>
+   <div class="admin-main">
+     <div class="admin-topbar">
+       <div class="admin-page-title" id="admin-page-title">Upload Interview</div>
+       <div id="admin-stats-mini" style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink4)"></div>
+     </div>
+     <div class="admin-content">
+       <div class="admin-stats" id="admin-stats-row"></div>
+ 
+       <!-- UPLOAD -->
+       <div class="admin-panel active" id="panel-upload">
+         <div class="upload-card">
+           <h2>Add New Interview to Gallery</h2>
+           <div class="form-row">
+             <div class="form-group">
+               <label class="form-label">Student Interviewer <span class="req">*</span></label>
+               <input class="form-input" id="f-student" placeholder="e.g. Jane M.">
+             </div>
+             <div class="form-group">
+               <label class="form-label">Subject Name <span class="req">*</span></label>
+               <input class="form-input" id="f-subject" placeholder="e.g. Devora Lopez">
+             </div>
+           </div>
+           <div class="form-row full">
+             <div class="form-group">
+               <label class="form-label">Interview Title <span class="req">*</span></label>
+               <input class="form-input" id="f-title" placeholder="Full title of the interview">
+             </div>
+           </div>
+           <div class="form-row">
+             <div class="form-group">
+               <label class="form-label">Category <span class="req">*</span></label>
+               <select class="form-select" id="f-category">
+                 <option value="">— Select category —</option>
+                 <option>Immigration</option>
+                 <option>Civil Rights & Activism</option>
+                 <option>Effects of War</option>
+                 <option>Medicine</option>
+                 <option>Education</option>
+                 <option>Financial Crisis</option>
+                 <option>Family</option>
+                 <option>LGBTQ+ History</option>
+                 <option>Women's History</option>
+                 <option>Railroads & West</option>
+                 <option>Politics</option>
+                 <option>Natural Disasters</option>
+                 <option>Communism History</option>
+                 <option>Music & Culture</option>
+                 <option>Thacher History</option>
+                 <option>Aviation</option>
+                 <option>Other</option>
+               </select>
+             </div>
+             <div class="form-group">
+               <label class="form-label">Tags <span style="font-weight:400;text-transform:none;letter-spacing:0">(comma-separated)</span></label>
+               <input class="form-input" id="f-tags" placeholder="e.g. Immigration, Guatemala, Civil War">
+               <span class="form-hint">Used for search and filtering</span>
+             </div>
+           </div>
+           <div class="form-row full">
+             <div class="form-group">
+               <label class="form-label">Abstract <span class="req">*</span></label>
+               <textarea class="form-textarea" id="f-abstract" placeholder="Paste the student's interview abstract here…"></textarea>
+             </div>
+           </div>
+           <div class="form-row">
+             <div class="form-group">
+               <label class="form-label">Audio Recording</label>
+               <label class="audio-toggle">
+                 <input type="checkbox" id="f-audio">
+                 <span>Audio recording is available</span>
+               </label>
+             </div>
+             <div class="form-group">
+               <label class="form-label">Audio File Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+               <input class="form-input" id="f-audio-name" placeholder="e.g. interview.m4a">
+             </div>
+           </div>
+           <div class="submit-row">
+             <button class="btn-primary" onclick="submitInterview()">Publish to Gallery</button>
+             <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
+             <div class="success-msg" id="upload-success">✓ Interview published to the gallery!</div>
+           </div>
+         </div>
+       </div>
+ 
+       <!-- MANAGE -->
+       <div class="admin-panel" id="panel-manage">
+         <div class="manage-card">
+           <h2>All Interviews (<span id="manage-count">0</span>)</h2>
+           <div class="manage-search">
+             <input type="text" id="manage-filter" placeholder="Filter by title, student, category…" oninput="renderManageTable(this.value)">
+           </div>
+           <div style="overflow-x:auto">
+             <table>
+               <thead>
+                 <tr>
+                   <th>Title</th>
+                   <th>Category</th>
+                   <th>Student</th>
+                   <th>Source</th>
+                   <th>Audio</th>
+                   <th></th>
+                 </tr>
+               </thead>
+               <tbody id="manage-tbody"></tbody>
+             </table>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+ 
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+ <div class="modal">
+   <div class="modal-head">
+     <div class="modal-cat" id="m-cat"></div>
+     <div class="modal-title" id="m-title"></div>
+     <div class="modal-student" id="m-student"></div>
+     <button class="modal-close" onclick="document.getElementById('overlay').classList.remove('open')">✕</button>
+   </div>
+   <div class="modal-body">
+     <h3>Abstract</h3>
+     <p id="m-abstract"></p>
+     <div class="modal-tags" id="m-tags"></div>
+     <div class="modal-audio" id="m-audio" style="display:none">♪ Audio recording available</div>
+   </div>
+ </div>
+</div>
+ 
+<script>
+// ── AUTH ──
+const ADMINS=[{email:'wdeclercq@thacher.org',pass:'Thacher',name:'W. DeClerq'},{email:'awayner@thacher.org',pass:'Thacher',name:'A. Wayner'}];
+let currentUser=null,isAdmin=false;
+ 
+function doLogin(){
+ const email=document.getElementById('login-email').value.trim().toLowerCase();
+ const pass=document.getElementById('login-pass').value;
+ const err=document.getElementById('login-error');
+ const admin=ADMINS.find(a=>a.email===email&&a.pass===pass);
+ if(admin){currentUser=admin;isAdmin=true;err.style.display='none';showAdmin();}
+ else{err.style.display='block';}
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+function guestAccess(){currentUser={name:'Guest'};isAdmin=false;showPublic();}
+function signOut(){
+ currentUser=null;isAdmin=false;
+ document.getElementById('login-screen').classList.add('active');
+ document.getElementById('public-screen').classList.remove('active');
+ document.getElementById('admin-screen').classList.remove('active');
+ document.getElementById('login-email').value='';
+ document.getElementById('login-pass').value='';
+}
+function showPublic(){
+ document.getElementById('login-screen').classList.remove('active');
+ document.getElementById('public-screen').classList.add('active');
+ document.getElementById('admin-screen').classList.remove('active');
+ document.getElementById('admin-nav-btn').style.display=isAdmin?'':'none';
+ renderGallery();
+}
+function showAdmin(){
+ document.getElementById('login-screen').classList.remove('active');
+ document.getElementById('public-screen').classList.remove('active');
+ document.getElementById('admin-screen').classList.add('active');
+ document.getElementById('admin-user-name').textContent=currentUser.name;
+ updateAdminStats();
+ renderManageTable('');
+}
+function switchToAdmin(){if(isAdmin)showAdmin();}
+function switchToPublic(){showPublic();}
+ 
+// ── DATA ──
+const STORE_KEY='thacher_interviews_v2';
+const SEED=[
+ {id:1,category:'Immigration',student:'Medina Y.',subject:'Rafat Ibironke Yusuf',title:'Mid-Century Movement: Experiencing the First Wave of Nigerian Immigration to the U.K.',abstract:'Rafat Ibironke Yusuf was born on January 20th, 1942 in Lagos, Nigeria. She immigrated to London in 1965, where she and her Stepdaughter joined her husband, Ramon Yusuf. Both began careers in technology, with Rafat beginning as a punch card operator for IBM, eventually reaching the role of system analyst and programmer before retirement. The 1960s was a period of notable change for British-Nigerian international affairs, with Nigerian independence in 1960, increased political unrest, and the Nigerian Civil War in 1967. In this interview she recalls the social and political atmosphere of this mid-60s era of Afro-European immigration and reflects on her experiences as a young woman raising a family in a foreign country.',tags:['1948 British Nationality Act','Nigerian Independence','Nigerian Civil War','UK','Africa'],audio:true,source:'original'},
+ {id:2,category:'Immigration',student:'Quinn A.',subject:'Kaarren "Mocka" Yvonne Hartwig-Brown',title:'Scandinavian Influence in the Midwest & A Life Story',abstract:'Kaarren "Mocka" Yvonne Hartwig-Brown is a Scandinavian-American woman born and raised in La Crosse, Wisconsin. She moved away from home at age 19, raised an interracial child alone in the 70s/80s, and worked with technology at the dawn of computers. She beat cancer, was hit by a car, and lost the ability to walk for many years — yet continues to spread her message of empathy and determination. This interview dives into her experience growing up in the Midwest surrounded by Scandinavian influences.',tags:['Scandinavian','German','Midwest','Wisconsin'],audio:false,source:'original'},
+ {id:3,category:'Immigration',student:'Jane M.',subject:'Devora Lopez',title:'Immigration Experience of Devora Lopez: Moving from Guatemala to the United States',abstract:'Devora Lopez was born in Guatemala in 1970. Due to the Guatemalan Civil War, there was a lack of opportunities for jobs and money. To provide for her family, she crossed the border into the United States, living through work grants while knowing no English until she became a citizen. Devora left her four kids with family in Guatemala to find job opportunities, then brought her kids and raised them in the United States once economically stable.',tags:['Guatemala','Guatemalan Civil War','Immigration','Citizenship'],audio:false,source:'original'},
+ {id:4,category:'Immigration',student:'Matthew D.',subject:'Oleg Zavelsky',title:"From the East to the West: A Ukrainian Immigrant's Story",abstract:"Oleg Zavelsky was born in 1973 in Kyiv, Ukraine. He grew up with educated parents — his father a physics teacher and his mother a construction engineer. Winning first prize in the Ukrainian Physics Olympiad, he gained admission to the Ukrainian Academy of Science. Following the Soviet Collapse in 1991, quality of life worsened and in 1994, Oleg immigrated with his family to Illinois, finishing his education in Computer Science at UIUC. He worked as a contractor at ComEd and founded his own company, Zsky, in 2007.",tags:['Soviet Union','Ukraine','Communism','Immigration','American Dream','Chernobyl'],audio:true,source:'original'},
+ {id:5,category:'Civil Rights & Activism',student:'Katy D.',subject:'Ramona Saenz',title:'"Love It or Leave It": The Deadly Fight for American Civil Rights in the 1960s',abstract:"Ramona Saenz, born in New Orleans in 1943, was raised under Jim Crow Laws in the South until moving to Los Angeles in 1958. As a young woman she was deeply interested in American politics and engaged with the 1960s Civil Rights Movement. On June 5, 1968, she found herself present on the night of Robert F. Kennedy's assassination. This interview delves into her experience as a Black woman in the Jim Crow era and the fight for equality for all Americans.",tags:['Jim Crow','Civil Rights Movement','African-American','RFK Assassination','Great Migration'],audio:true,source:'original'},
+ {id:6,category:'Civil Rights & Activism',student:'Justin P.',subject:'Victoria & Robert Carter',title:'One in a Million: Civil Rights and The Million Man March',abstract:'Victoria Carter was born in 1956 in Camden, New Jersey, in a mixed-race suburban neighborhood. Robert Carter was born in Philadelphia and moved to New Jersey in the early 60s. His experience with integrated communities fostered deep support for the Civil Rights Movement, inspiring him to be part of its legacy through the Million Man March on October 16, 1995 in Washington D.C.',tags:['Civil Rights','Million Man March','Racism','Segregation','Activism','1960s'],audio:true,source:'original'},
+ {id:7,category:'Civil Rights & Activism',student:'Khalid S.',subject:'Stephanie Thomas',title:'"Silence Equals Death": Activism\'s Role in the AIDS Epidemic and the Fight for Marriage Equality',abstract:"Stephanie Thomas, Director of Academic Support at the Thacher School, recounts her experience as a college-age student during the AIDS epidemic and the fight for marriage equality. At eighteen, she came out as lesbian at a private Christian university, transferring to UCLA where she turned to activism. She recounts her time orchestrating the push towards marriage equality, including her own marriage in 2008 — being the first lesbian couple to marry in Litchville, Connecticut.",tags:['AIDS Epidemic','Marriage Equality','Activism','LGBTQ+','UCLA'],audio:true,source:'original'},
+ {id:8,category:'Civil Rights & Activism',student:'Aidan L.',subject:'Father of Aidan Lee',title:"Truth Under Siege: A Journalist's Stand During the Gwangju Uprising",abstract:"The Gwangju Uprising of May 1980 was a pivotal moment when citizens protested against the military dictatorship of Chun Doo Hwan. This interview explores the uprising through the lens of Aidan's father, who was a fifth-grade student in Daegu — and the son of the editor-in-chief of Yeongnam Ilbo. His grandfather was ultimately forced into exile for attempting to report on events of the massacre.",tags:['Gwangju Uprising','South Korea','Journalism','Censorship','Martial Law','1980'],audio:true,source:'original'},
+ {id:9,category:'Civil Rights & Activism',student:'Angele B.',subject:'Kathryn (grandmother)',title:'The Devastation and Resilience of American Culture During the AIDS Crisis',abstract:'Born and raised in California, Kathryn was a bystander to the AIDS epidemic and its direct impacts on communities like Hollywood. With queer children and grandchildren of her own, she recounts her experience retrospectively. The interview covers complex themes of how homophobia and queer culture have progressed over time, with emphasis on the AIDS crisis of the 1980s and the religious aspect of queer acceptance.',tags:['LGBTQIA+ History','AIDS Crisis','Gender Roles','Hollywood','California'],audio:false,source:'original'},
+ {id:10,category:'Civil Rights & Activism',student:'Jaeda L.',subject:'Gloria Liddell',title:'African Americans in Law and the Impact of HBCUs',abstract:'African Americans have a long history of being denied from prestigious universities, and while affirmative action has helped, oppression persists. After the Civil War, HBCUs emerged to provide Black Americans access to education. This interview dives into the African American experience in American universities, law, and the impact of HBCUs on establishing Black lawyers — through a primary source interview with Gloria Liddell, an African American woman who attended an HBCU and became an established lawyer.',tags:['Law','HBCUs','African American','Education','Affirmative Action'],audio:true,source:'original'},
+ {id:11,category:'Railroads & West',student:'Ada H.',subject:'Ernesto "Ernie" Loya',title:'From Mexico to Prairie Railroad: The Subtle Legacies of Westward Expansion in Nebraska',abstract:"Ernesto Loya was born in 1951 in Sutherland, Nebraska, to two Mexican immigrants from Chihuahua. His father Nicholas served in WWII then worked for Union Pacific Railroad. After graduating high school, Ernie worked at a local grocery store before making the shift to work for Union Pacific at age twenty-four, working until his retirement in 2011.",tags:['Westward Expansion','Railroad','Mexican Immigrant','Nebraska','Union Pacific'],audio:true,source:'original'},
+ {id:12,category:'Politics',student:'Arden B.',subject:'Dr. David J. Brailer',title:'Inside the First U.S.-China Strategic Economic Dialogue: An Interview with Dr. David J. Brailer',abstract:"Dr. David Joseph Brailer was born in 1959 in Kingwood, West Virginia. He holds doctoral degrees in medicine and economics from West Virginia University and the Wharton School. He founded CareScience in 1992 and was appointed as the first National Coordinator for Health Information Technology by President George W. Bush. He was then asked to run the healthcare aspect of the Strategic Economic Dialogue with China.",tags:['Strategic Economic Dialogue','China','US-China Relations','Bush Administration','Healthcare'],audio:true,source:'original'},
+ {id:13,category:'Effects of War',student:'Jackson S.',subject:'Ben West (grandfather)',title:'West Texas Boy: Determination, Journey to Manhood, and the Impacts of Military Service',abstract:"Ben West was born in Lubbock, Texas in 1939. Finding his passion for journalism, he forged strong writing skills through high school. During his sophomore year at the University of Texas, he took the exam for the Holloway program — out of 100,000 college-level students only 2,000 passed, including Ben. The program offered a free university education for serving three years at sea.",tags:['Military Service','Navy','Korean War','Education','Texas','Journalism'],audio:true,source:'original'},
+ {id:14,category:'Effects of War',student:'Georgia B.',subject:'Elke Browning (Nana)',title:'The Aftermath of World War II: How The War Affected Children in Germany',abstract:"Elke Browning was born in 1945 in Weiden, Germany, at the end of WWII. She grew up in Bavaria where conditions were harsh and food was scarce. Her father was a German pilot who died of cancer when Elke was seven; her mother then married an American soldier. Her family moved to America briefly, exposing her to American culture she describes as 'luxurious.'",tags:['Germany','World War II','American Soldiers','Bavaria','Post-War'],audio:true,source:'original'},
+ {id:15,category:'Effects of War',student:'Hannah H.',subject:'Susan Housden (grandmother)',title:'Women and Revolutions: Oral History Project',abstract:"Susan Housden grew up in Bristol, England. In 1974, she and her family moved to Tehran, Iran. In this interview, Susan reflects on the social culture of Tehran before the revolution and her life experience during the abrupt cultural shift in the years leading to the Iranian Revolution. As the revolution escalated, she made the difficult decision to leave with her children to England, leaving her husband behind for months.",tags:['Iranian Revolution','Tehran','Iran','Women','1970s','Courage'],audio:true,source:'original'},
+ {id:16,category:'Effects of War',student:'Tomoka S.',subject:'Koichiro Sato (grandfather)',title:"A Life After the War: How One Man's Postwar Journey Shaped a Family Business",abstract:"Koichiro Sato was born in 1948 and grew up in Nagano prefecture, Japan. His first memory was visiting a local temple and seeing injured soldiers beg for support. He later met his wife on a boat to Hong Kong, and their marriage led him on an unexpected entrepreneurial journey. He eventually founded a company in Kimitsu, Chiba, which remains the family business today.",tags:['WWII','Japan','Post-War','Business','Entrepreneurship','Nagano'],audio:false,source:'original'},
+ {id:17,category:'Effects of War',student:'Trinity C.',subject:'Matthew Alan Clough (father)',title:'A Moment In Time: The Realities of War in the Middle East',abstract:"Matthew Alan Clough was born in 1970 in Omaha, Nebraska. He joined the United States Marine Corps at twenty-four, completing three tours in Kuwait, Turkey, Kurdistan, and Iran. He later joined the U.S. Air Force and served in Iraq, Iran, Kuwait, and Kyrgyzstan. After 9/11, he was deployed five months after the assassination of Osama Bin Laden and spent the rest of his military career in Afghanistan, completing five overseas tours in 20 years of service.",tags:['Afghanistan War','9/11','Osama Bin Laden','PTSD','Military','Middle East'],audio:true,source:'original'},
+ {id:18,category:'Effects of War',student:'Rafael K.',subject:'Bill Bulis',title:'The Life and Experiences of a Naval Aviator and the Evolution of Aerial Tactics from Vietnam',abstract:"Bill Bulis is the Deputy Director of Operations for Navy Region Northwest. In his service as a Naval Aviator from 1993 to 2017, he flew over 2,800 military flight hours, worked with the White House Military Office during the Bush Administration, and served as air boss on the USS Harry S Truman aircraft carrier in 2010.",tags:['Navy','Aviation','Vietnam','White House','USS Truman','Leadership'],audio:true,source:'original'},
+ {id:19,category:'Effects of War',student:'Lily K.',subject:'Jang Soon Ok (grandmother)',title:'Echoes of the Korean Civil War: The Journey from Chaos to Classroom',abstract:"Jang Soon Ok was born on November 11, 1943, in Pyeongtaek City. She experienced the Korean War as a young person and had to flee her house fearing for her life. Despite these challenges, she remained determined to pursue a career in education — all while navigating barriers faced by women.",tags:['Korean War','Korea','Women','Education','Evacuation','1950s'],audio:true,source:'original'},
+ {id:20,category:'Natural Disasters',student:'Spencer J.',subject:'Alison Greiner; Matt & Chase Jacobson',title:"Uncharted Territory: A Displaced Family's Experience with the Palisades Fires",abstract:"Ignited on January 7th, 2025, the Palisades Fire killed a dozen people, burned tens of thousands of acres, and decimated around 7,000 structures — the most destructive wildfire in Los Angeles history. This collection of interviews explores the experiences of Alison Greiner and Matt and Chase Jacobson, displaced by the fires.",tags:['Los Angeles','Palisades Fire','Wildfire','Natural Disaster','2025','California'],audio:true,source:'original'},
+ {id:21,category:'Communism History',student:'Jackson H.',subject:'Miro Slava Adamkovic',title:'The Velvet Shift',abstract:"Miro Slava Adamkovic grew up in Czechoslovakia during the Russian Occupation and witnessed the Velvet Revolution. He details his politically divided family, the tensions between Catholic and Communist ideologies, and the propaganda fed to him in kindergarten. He vividly recounts the Velvet Revolution and its impacts — more political freedom, economic privatization, and political pluralism.",tags:['Communism','Velvet Revolution','Czechoslovakia','Soviet Union','Eastern Europe'],audio:true,source:'original'},
+ {id:22,category:'Financial Crisis',student:'Remi W.',subject:'Howard Perlstein (uncle)',title:'The Power of Money: The Social Effects of the 2008 Financial Crisis',abstract:"Howard Perlstein was born on January 13, 1963 and grew up in Massachusetts. When the 2008 Financial Crisis began he was about 44 years old, working as an independent consultant. Work became difficult to find, but this led him onto a path of financial literacy work — helping people how to smartly use and save their money.",tags:['2008 Financial Crisis','Consulting','Financial Literacy','Economy'],audio:true,source:'original'},
+ {id:23,category:'Financial Crisis',student:'Alex K.',subject:'David John Keeling (father)',title:'Redefining Consulting: McKinsey During the 2008 Financial Crisis',abstract:"David John Keeling was born in 1964 in Perth, Australia. He attended the University of Western Australia for engineering, then Northwestern University's Kellogg School of Management. He chose McKinsey over BCG and worked his way up to senior partner over more than 30 years at the firm.",tags:['McKinsey','2008 Financial Crisis','Consulting','Finance','Australia'],audio:true,source:'original'},
+ {id:24,category:'Financial Crisis',student:'Jake L.',subject:'Kwon Soo Cho & Hye Young Cho',title:'Miracle on the Han River: South Korean Economic Development through Family History',abstract:"Kwon Soo Cho was born in 1948 in Daegu, South Korea, as the oldest of five children in a poor working-class family. As a prominent banker, he witnessed South Korea's rapid economic growth in the 1970s-80s and the 1997 Asian financial crisis.",tags:['South Korea','Economic Development','Banking','Korean History','1997 Asian Crisis'],audio:true,source:'original'},
+ {id:25,category:'Family',student:'Annikka Z.',subject:'Faming Zhou (grandfather)',title:'Eras of China: Generations of Family and Sacrifice',abstract:"Faming Zhou was born on June 5, 1946 in Chongqing, China during a turbulent period between 'Old China' and the rise of the CCP. His landlord family was forced to give up everything, and he was given up for adoption. Hardships like poverty and the 1960s Sichuan famine caused him to leave school early. He worked his way up from construction worker to manager to government engineer.",tags:['CCP','China','Sichuan Famine','Family','Cultural Revolution','Adoption'],audio:true,source:'original'},
+ {id:26,category:'Education',student:'Carol Y.',subject:'Chao Zheng (grandfather)',title:"Chasing the College Dream: How China's Cultural Revolution Tarnished a Student's Life",abstract:"From elementary school, Chao Zheng dreamt of going to college and changing his family's fate. His diligence in mathematics allowed him to excel — but when one year away from graduating high school, China's Great Proletarian Cultural Revolution began and changed his life forever. Instead of attending medical school, he was assigned to teach math at a local middle school.",tags:['Cultural Revolution','China','Mao Zedong','College','Education','Medicine'],audio:true,source:'original'},
+ {id:27,category:'Education',student:'Beatrice L.',subject:'Charlotte (grandmother)',title:'A Year at Eagle Butte: Education at Native American Reservations in the 1960s',abstract:"Charlotte grew up on the South Side of Chicago and attended Cornell University for a Bachelor of Fine Arts. After graduating, she and her husband moved to the Cheyenne River reservation in South Dakota, where Charlotte taught art to the Cheyenne River Sioux Tribe from 1965-1966.",tags:['Native American','Sioux','Indian Reservation','Education','1960s','Chicago'],audio:true,source:'original'},
+ {id:28,category:'Medicine',student:'Chloe H.',subject:'Carolyn Kinder Carr (grandmother)',title:'A Story of Vaccines and Viruses: An Interview About Encephalitis',abstract:"Carolyn Kinder Carr was born in 1939 in Providence, Rhode Island. At age six, she lost the ability to walk or talk due to Encephalitis — a brain-damaging disease that occurred after a bad case of chickenpox. Penicillin had been made publicly available shortly before her diagnosis, saving her life. She discusses chickenpox, measles, mumps, Polio, and COVID-19, and speaks to the importance of vaccinations.",tags:['Medicine','Vaccines','Encephalitis','Polio','COVID-19','Public Health','Penicillin'],audio:true,source:'original'},
+ {id:29,category:'Medicine',student:'Mateo E.',subject:'Alonso Escalante Sr. (grandfather)',title:'The Life and Experiences of a Mexican Immigrant Hand Surgeon',abstract:"Alonso Escalante Sr. was born December 12, 1944 and grew up in Mérida on the Yucatán Peninsula of Mexico. His father was a well-respected doctor, and he developed an interest in medicine. In 1970, after graduating from UNAM med school, he immigrated to the United States, completing his residency at Tulane before moving to San Antonio, Texas, where he became a successful hand surgeon over a 40-year career.",tags:['Medicine','Immigration','Mexico','Hand Surgery','UNAM','Tulane','Texas'],audio:true,source:'original'},
+ {id:30,category:'Medicine',student:'Charlotte S.',subject:'Dr. Jennifer Brokaw (aunt)',title:"Patients, Pakistan and Palliative Care: Dr. Jennifer Brokaw's Impact Across the World",abstract:"Dr. Jennifer Brokaw dedicated her life to medicine. In 1989, between pre-med at Stanford and med school at Dartmouth, she spent half a year in Northwest Pakistan. She worked in emergency medicine in San Francisco for over two decades, then created her own business centered around end-of-life care, and served as the San Francisco Fire Department's physician during COVID-19.",tags:['Healthcare','Pakistan','Emergency Medicine','Palliative Care','COVID-19','Stanford'],audio:false,source:'original'},
+ {id:31,category:"Women's History",student:'Lauren S.',subject:'Ellen Milne (mother)',title:'Third Wave Feminism: The Experience and Development of a Feminist in a Traditional Family',abstract:"Born on July 3, 1974, Ellen Milne grew up in St. Louis, Missouri in a traditional Catholic family as the only daughter of three children. As the third wave of feminism gained momentum in the 90s, she navigated the sexism in her own home. Through personal anecdotes and candid reflections, she offers insight into navigating feminism throughout the decades in a conservative setting.",tags:['Third Wave Feminism','Riot Grrrl','Gender Roles','Catholicism','Missouri','1990s'],audio:true,source:'original'},
+ {id:32,category:'Music & Culture',student:'Ethan S.',subject:'Devin Ford',title:'Social Music: The Increasing Popularity of Country Music',abstract:'Devin Ford works as the Social Media Manager for the Country Music Association (CMA) in Nashville, TN. Founded in 1958, the CMA operates the Country Music Hall of Fame and runs the annual CMA Fest. With the rise of social media — especially TikTok and Instagram — the music industry has been forced to adapt substantially.',tags:['Country Music','CMA','Nashville','TikTok','Instagram','Social Media'],audio:true,source:'original'},
+ {id:33,category:'Thacher History',student:'Jocelyn T.',subject:'Omar Barraza',title:"On Your Honor: A Thacher Alum's Experience Growing Up in Two Different Worlds",abstract:"Omar Barraza was born in 1972 and grew up in Ojai, CA. He experienced a difficult childhood with both parents battling addiction and his father spending time in jail. He attended the Thacher School from 1986 to 1990, later attending Pomona College and Seattle University School of Law, becoming a lawyer in 2011.",tags:['Thacher School','Ojai','Immigration Law','Addiction','Seattle','Pomona College'],audio:true,source:'original'},
+ {id:34,category:'LGBTQ+ History',student:'Taylor C.',subject:'Karl Robert Benson (great-uncle)',title:'"The Gay Thing": A Gay Man Navigating Life in the Late 1900s',abstract:"Karl Robert Benson knew he was gay from an early age. Growing up when the US was not inclusive of the LGBTQ+ community, Karl navigated living in a Lutheran family, dealing with bullies, and coming to terms with his identity. After college, he went to Fresno, California, where he became a leader in a small LGBTQ+ area by establishing an organization to fight for the rights of those who had AIDS.",tags:['AIDS Crisis','LGBTQ+ Rights','Lutheranism','Fresno','Homophobia'],audio:true,source:'original'},
+ {id:35,category:'Aviation',student:'Bodil C.',subject:'Jenny Beaty',title:'Breaking Through: The Life of a Female Pioneer in the Airline Industry',abstract:"Jenny Beaty was born in 1961 in Madison, Wisconsin. Her mother owned a plane and flew for fun. After moving to New Mexico, Jenny pursued flight lessons and convinced her parents to fund her training in exchange for finishing college at UW-Madison. She got a job flying charter flights, then worked through the ranks of the airline industry during the 'lost decade' following 9/11.",tags:['Aviation','Airline Industry','Women Pilots','9/11','Wisconsin','New Mexico'],audio:true,source:'original'}
+];
+ 
+function loadInterviews(){
+ try{const r=localStorage.getItem(STORE_KEY);if(r)return JSON.parse(r);}catch(e){}
+ localStorage.setItem(STORE_KEY,JSON.stringify(SEED));
+ return JSON.parse(JSON.stringify(SEED));
+}
+function saveInterviews(arr){localStorage.setItem(STORE_KEY,JSON.stringify(arr));}
+function getInterviews(){return loadInterviews();}
+ 
+// ── BUILD INDEX ──
+function buildIndex(interviews){
+ const idx={};
+ interviews.forEach(d=>{
+   const text=`${d.title} ${d.abstract} ${(d.tags||[]).join(' ')} ${d.subject} ${d.student} ${d.category}`.toLowerCase();
+   text.split(/\W+/).filter(w=>w.length>2).forEach(w=>{
+     if(!idx[w])idx[w]=new Set();
+     idx[w].add(d.id);
+   });
+ });
+ return idx;
+}
+function highlight(text,words){
+ if(!words.length)return text;
+ let out=text;
+ words.forEach(w=>{if(w.length<2)return;out=out.replace(new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'),'<mark>$1</mark>');});
+ return out;
+}
+ 
+// ── PUBLIC GALLERY ──
+let activeFilter='all';
+function setFilter(cat,btn){
+ activeFilter=cat;
+ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+ btn.classList.add('active');
+ renderGallery();
+}
+const CAT_ORDER=['Immigration','Civil Rights & Activism','Railroads & West','Politics','Effects of War','Natural Disasters','Communism History','Financial Crisis','Family','Education','Medicine',"Women's History",'Music & Culture','Thacher History','LGBTQ+ History','Aviation','Other'];
+const OTHER_CATS=new Set(['Railroads & West','Politics','Natural Disasters','Communism History','Music & Culture','Thacher History','Aviation']);
+ 
+function renderGallery(){
+ const interviews=getInterviews();
+ const idx=buildIndex(interviews);
+ const q=document.getElementById('pub-search').value.trim().toLowerCase();
+ const words=q?q.split(/\W+/).filter(w=>w.length>2):[];
+ let visible=interviews;
+ if(words.length){
+   const scores={};
+   words.forEach(w=>{Object.keys(idx).forEach(k=>{if(k.includes(w)){const boost=k===w?3:1;idx[k].forEach(id=>{scores[id]=(scores[id]||0)+boost;});}});});
+   visible=interviews.filter(d=>scores[d.id]).sort((a,b)=>(scores[b.id]||0)-(scores[a.id]||0));
+ }
+ if(activeFilter!=='all'){
+   if(activeFilter==='Other')visible=visible.filter(d=>OTHER_CATS.has(d.category));
+   else visible=visible.filter(d=>d.category===activeFilter);
+ }
+ document.getElementById('pub-count').textContent=`${visible.length} of ${interviews.length} interviews`;
+ const groups={};
+ visible.forEach(d=>{if(!groups[d.category])groups[d.category]=[];groups[d.category].push(d);});
+ const newestIds=new Set(interviews.filter(d=>d.source==='added').map(d=>d.id));
+ let html='';
+ if(!visible.length){
+   html=`<div class="empty"><div class="empty-title">No interviews found</div><p>Try a different keyword or clear the filter.</p></div>`;
+ } else {
+   CAT_ORDER.forEach(cat=>{
+     if(!groups[cat]?.length)return;
+     const items=groups[cat];
+     html+=`<div class="section-head"><div class="section-name">${cat}</div><div class="section-line"></div><div class="section-count">${items.length} interview${items.length>1?'s':''}</div></div><div class="cards">`;
+     items.forEach((d,i)=>{
+       html+=`<div class="card${newestIds.has(d.id)?' is-new':''}" style="animation-delay:${i*.04}s" onclick="openModal(${d.id})">
+         <div class="card-cat">${d.category}</div>
+         <div class="card-title">${highlight(d.title,words)}</div>
+         <div class="card-student">by ${d.student} · subject: ${d.subject.split('(')[0].trim()}</div>
+         <div class="card-abstract">${highlight((d.abstract||'').slice(0,280)+'…',words)}</div>
+         <div class="card-footer">${(d.tags||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}${d.audio?'<span class="has-audio">Audio</span>':''}</div>
+       </div>`;
+     });
+     html+=`</div>`;
+   });
+   Object.keys(groups).forEach(cat=>{
+     if(CAT_ORDER.includes(cat))return;
+     const items=groups[cat];
+     html+=`<div class="section-head"><div class="section-name">${cat}</div><div class="section-line"></div><div class="section-count">${items.length}</div></div><div class="cards">`;
+     items.forEach((d,i)=>{html+=`<div class="card${newestIds.has(d.id)?' is-new':''}" style="animation-delay:${i*.04}s" onclick="openModal(${d.id})"><div class="card-cat">${d.category}</div><div class="card-title">${d.title}</div><div class="card-student">by ${d.student} · subject: ${d.subject.split('(')[0].trim()}</div><div class="card-abstract">${(d.abstract||'').slice(0,280)}…</div><div class="card-footer">${(d.tags||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}${d.audio?'<span class="has-audio">Audio</span>':''}</div></div>`;});
+     html+=`</div>`;
+   });
+ }
+ document.getElementById('pub-main').innerHTML=html;
+}
+ 
+function openModal(id){
+ const d=getInterviews().find(x=>x.id===id);
+ if(!d)return;
+ document.getElementById('m-cat').textContent=d.category;
+ document.getElementById('m-title').textContent=d.title;
+ document.getElementById('m-student').textContent=`Interviewed by ${d.student} · Subject: ${d.subject}`;
+ document.getElementById('m-abstract').textContent=d.abstract;
+ document.getElementById('m-tags').innerHTML=(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+ const audio=document.getElementById('m-audio');
+ audio.style.display=d.audio?'flex':'none';
+ audio.textContent=d.audioName?`♪ Audio recording: ${d.audioName}`:'♪ Audio recording available';
+ document.getElementById('overlay').classList.add('open');
+}
+function closeModal(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('overlay').classList.remove('open');});
+ 
+// ── ADMIN ──
+function showAdminPanel(name,btn){
+ document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.admin-nav-item').forEach(b=>b.classList.remove('active'));
+ document.getElementById('panel-'+name).classList.add('active');
+ if(btn)btn.classList.add('active');
+ const titles={upload:'Upload Interview',manage:'All Interviews'};
+ document.getElementById('admin-page-title').textContent=titles[name]||name;
+ if(name==='manage')renderManageTable(document.getElementById('manage-filter')?.value||'');
+ updateAdminStats();
+}
+ 
+function updateAdminStats(){
+ const all=getInterviews();
+ const added=all.filter(d=>d.source==='added');
+ const withAudio=all.filter(d=>d.audio);
+ const cats=new Set(all.map(d=>d.category));
+ document.getElementById('admin-stats-row').innerHTML=`
+   <div class="astat"><div class="astat-val">${all.length}</div><div class="astat-label">Total Interviews</div></div>
+   <div class="astat"><div class="astat-val">${added.length}</div><div class="astat-label">Admin Added</div></div>
+   <div class="astat"><div class="astat-val">${withAudio.length}</div><div class="astat-label">With Audio</div></div>
+   <div class="astat"><div class="astat-val">${cats.size}</div><div class="astat-label">Categories</div></div>`;
+ document.getElementById('admin-stats-mini').textContent=`${all.length} total · ${added.length} added by admin`;
+}
+ 
+function submitInterview(){
+ const student=document.getElementById('f-student').value.trim();
+ const subject=document.getElementById('f-subject').value.trim();
+ const title=document.getElementById('f-title').value.trim();
+ const category=document.getElementById('f-category').value;
+ const abstract=document.getElementById('f-abstract').value.trim();
+ const tagsRaw=document.getElementById('f-tags').value;
+ const audio=document.getElementById('f-audio').checked;
+ const audioName=document.getElementById('f-audio-name').value.trim();
+ if(!student||!subject||!title||!category||!abstract){alert('Please fill in all required fields (marked with *).');return;}
+ const tags=tagsRaw.split(',').map(t=>t.trim()).filter(Boolean);
+ const all=getInterviews();
+ const newId=Math.max(...all.map(d=>d.id),0)+1;
+ all.push({id:newId,category,student,subject,title,abstract,tags,audio,audioName,source:'added',addedBy:currentUser.name,addedAt:new Date().toLocaleDateString()});
+ saveInterviews(all);
+ document.getElementById('upload-success').classList.add('show');
+ setTimeout(()=>document.getElementById('upload-success').classList.remove('show'),3500);
+ clearForm();
+ updateAdminStats();
+}
+ 
+function clearForm(){
+ ['f-student','f-subject','f-title','f-tags','f-abstract','f-audio-name'].forEach(id=>{document.getElementById(id).value='';});
+ document.getElementById('f-category').value='';
+ document.getElementById('f-audio').checked=false;
+}
+ 
+function renderManageTable(filter){
+ const all=getInterviews();
+ const q=filter.toLowerCase();
+ const shown=q?all.filter(d=>d.title.toLowerCase().includes(q)||d.student.toLowerCase().includes(q)||d.subject.toLowerCase().includes(q)||d.category.toLowerCase().includes(q)):all;
+ document.getElementById('manage-count').textContent=all.length;
+ document.getElementById('manage-tbody').innerHTML=shown.map(d=>`
+   <tr>
+     <td><div class="td-title">${d.title}</div></td>
+     <td><div class="td-cat">${d.category}</div></td>
+     <td><div class="td-mono">${d.student}</div></td>
+     <td><span class="td-badge ${d.source==='added'?'badge-added':'badge-original'}">${d.source==='added'?'Admin added':'Original'}</span></td>
+     <td><div class="td-mono">${d.audio?'✓':'-'}</div></td>
+     <td>${d.source==='added'?`<button class="btn-delete" onclick="deleteInterview(${d.id})" title="Delete">✕</button>`:''}</td>
+   </tr>`).join('');
+}
+ 
+function deleteInterview(id){
+ if(!confirm('Remove this interview from the gallery?'))return;
+ saveInterviews(getInterviews().filter(d=>d.id!==id));
+ renderManageTable(document.getElementById('manage-filter')?.value||'');
+ updateAdminStats();
+}
+</script>
+</body>
+</html>
+
